@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import './../styles/App.css';
 
 const items = [
@@ -36,9 +36,32 @@ const items = [
 ];
 
 const App = () => {
+
+  const [visibleItems, setVisibleItems] = useState(0);
+  const [showLoadMore, setShowLoadMore] = useState(true);
+
+  const loadMoreItems = () => {
+    const nextVisibleItems = visibleItems + 10;
+    if(nextVisibleItems >= items.length){
+      setShowLoadMore(false);
+    }
+    setVisibleItems(nextVisibleItems);
+  };
+
   return (
     <div>
-        {/* Do not remove the main div */}
+        <ul>
+          {
+            items.slice(0, visibleItems).map((item, index) => (
+              <li key={index}>{item}</li>
+            ))
+          }
+        </ul>
+        {
+          showLoadMore && (
+            <button onClick={loadMoreItems}>Load More</button>
+          )
+        }
     </div>
   )
 }
